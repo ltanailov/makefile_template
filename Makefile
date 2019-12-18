@@ -9,7 +9,7 @@ OBJ_DIR	=		#OBJECTS_DIRECTORY#
 # ------------  LIBFT  ------------------------------------------------------- #
 LFT		=		libft.a
 LFT_DIR	=		#LIBFT_DIRECTORY#
-LHS_DIR	=		$(LIB_DIR)/#LIBFT_HEADERS_DIRECTORY#
+LHS_DIR	=		$(LFT_DIR)/#LIBFT_HEADERS_DIRECTORY#
 
 # ------------  SOURCE FILES  ------------------------------------------------ #
 SRC_FLS	=       #SOURCE_FILES#
@@ -24,7 +24,7 @@ CC		=		gcc
 RM		=		rm -rf
 CFLGS	=		-Wall -Werror -Wextra
 IFLGS	=		-I $(HDR_DIR) -I $(LHS_DIR)
-LFLGS	=		-L $(LIB_DIR) -lft
+LFLGS	=		-L $(LFT_DIR) -lft
 DFLGS	=		-MMD -MP
 DEBUG	=		-g -pg -fsanitize=address
 
@@ -33,8 +33,8 @@ DEBUG	=		-g -pg -fsanitize=address
 
 all: $(NAME)
 
-$(LIB_DIR)/$(LIB):
-	$(MAKE) -C $(LIB_DIR)
+$(LFT_DIR)/$(LFT):
+	$(MAKE) -C $(LFT_DIR)
 
 -include $(DEPS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
@@ -43,14 +43,15 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-$(NAME): $(LIB_DIR)/$(LIB) $(OBJS)
-	$(CC) -o $(NAME) $(CFLGS) $(DFLGS) $(OBJS) $(IFLGS) $(LFLGS)
+$(NAME): $(LFT_DIR)/$(LFT) $(OBJS)
+	$(CC) -o $(NAME) $(OBJS) $(LFLGS)
 
 clean:
-	$(MAKE) -C $(LIB_DIR) clean
+	$(MAKE) -C $(LFT_DIR) clean
 	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	$(MAKE) -C $(LIB_DIR) fclean
+	$(MAKE) -C $(LFT_DIR) fclean
+	$(RM) $(NAME)
 
 re: fclean all
